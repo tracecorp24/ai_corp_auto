@@ -67,17 +67,70 @@ async function main() {
     `Yalnızca bu görev için gereken işlemleri yap. ` +
     `Son yanıtın yalnızca sözleşmedeki alanları içeren geçerli bir JSON nesnesi olsun. ` +
     `Yapmadığın araştırmayı, doğrulamayı, GitHub işlemini veya maliyeti yapılmış gösterme.`;
-  const args = ['exec', '--json', '--sandbox', task.department === 'develop' ? 'workspace-write' : 'read-only',
+  const sandboxOverride = process.env.AI_CORP_CODEX_SANDBOX;
+  if (sandboxOverride && !['read-only', 'workspace-write', 'danger-full-access'].includes(sandboxOverride)) {
+    throw new Error('Geçersiz AI_CORP_CODEX_SANDBOX değeri.');
+  }
+  const sandbox = sandboxOverride || (task.department === 'develop' ? 'workspace-write' : 'read-only');
+  const args = ['exec', '--json', '--sandbox', sandbox,
     '--config', 'approval_policy=never', '--skip-git-repo-check', '--output-last-message', outputFile,
     '-C', workspace, '-'];
   if (task.department === 'develop') args.splice(args.length - 1, 0, '--add-dir', path.join(ROOT, 'implement'));
   if (process.env.AI_CORP_CODEX_MODEL) args.splice(1, 0, '--model', process.env.AI_CORP_CODEX_MODEL);
   const auditFile = path.join(OUTPUTS, `${task.id}.events.jsonl`);
   await run(codex, args, workspace, prompt, auditFile);
+  let tokenUsage = null;
+  const events = [];
+  for (const line of fs.readFileSync(auditFile, 'utf8').split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    let event;
+    try { event = JSON.parse(line); } catch { continue; }
+    if (event.type === 'turn.completed' && event.usage &&
+        Number.isInteger(event.usage.input_tokens) && Number.isInteger(event.usage.output_tokens)) {
+      tokenUsage = { input_tokens: event.usage.input_tokens, output_tokens: event.usage.output_tokens };
+    }
+    if (event.type === 'item.started' && event.item?.type === 'command_execution' && events.length < 490) {
+      events.push({ type: 'TOOL_STARTED', details: { tool: 'command_execution' } });
+    }
+    if (event.type === 'item.completed' && event.item?.type === 'command_execution' && events.length < 490) {
+      events.push({ type: 'TOOL_FINISHED', details: { tool: 'command_execution', exit_code: event.item.exit_code ?? null } });
+    }
+  }
   const output = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
   output.audit_artifact = path.relative(ROOT, auditFile).replaceAll(path.sep, '/');
   if (task.kind === 'develop') {
+    if (typeof output.delivery_type === 'string' && /markdown/i.test(output.delivery_type)) {
+      output.delivery_type_description = output.delivery_type;
+      output.delivery_type = 'document';
+    }
+    if (Array.isArray(output.verification)) {
+      output.verification = output.verification.map(item => ({
+        ...item,
+        command: item.command ?? item.komut,
+        exit_code: item.exit_code ?? item['çıkış_kodu'] ?? item['çıkış kodu'],
+        output_summary: item.output_summary ?? item['çıktı_özeti'] ?? item['çıktı özeti'],
+      }));
+    }
+  }
+  if (task.kind === 'analyze' && output.owner_report && typeof output.owner_report === 'object') {
+    output.owner_report_structured = output.owner_report;
+    output.owner_report = JSON.stringify(output.owner_report, null, 2);
+  }
+  if (Array.isArray(output.sources)) {
+    const localSources = output.sources.filter(source => !/^https?:\/\//.test(source?.url || ''));
+    if (localSources.length) {
+      output.local_sources = [...(Array.isArray(output.local_sources) ? output.local_sources : []), ...localSources];
+      output.sources = output.sources.filter(source => /^https?:\/\//.test(source?.url || ''));
+    }
+  }
+  if (task.kind === 'develop') {
     output.workspace = workspace;
+    const expectedBranch = `ai-corp/${task.run_id.slice(0, 8)}`;
+    const currentBranch = (await run('git', ['branch', '--show-current'], workspace)).trim();
+    if (currentBranch !== expectedBranch) {
+      await run('git', ['checkout', '-B', expectedBranch], workspace);
+      output.agent_branch = currentBranch;
+    }
     output.branch = (await run('git', ['branch', '--show-current'], workspace)).trim();
     try { output.commit = (await run('git', ['rev-parse', 'HEAD'], workspace)).trim(); } catch { output.commit = null; }
     output.files_changed = (await run('git', ['status', '--short'], workspace)).trim().split(/\r?\n/).filter(Boolean);
@@ -85,7 +138,9 @@ async function main() {
     try { remote = (await run('git', ['remote', 'get-url', 'origin'], workspace)).trim(); } catch { /* local project */ }
     if (remote && output.commit) await run('git', ['push', '-u', 'origin', output.branch], workspace);
   }
-  process.stdout.write(JSON.stringify({ output, usage: { provider: 'codex-cli', model: process.env.AI_CORP_CODEX_MODEL || 'configured-default' } }));
+  process.stdout.write(JSON.stringify({ output, events, usage: {
+    provider: 'codex-cli', model: process.env.AI_CORP_CODEX_MODEL || 'configured-default', ...tokenUsage,
+  } }));
 }
 
 main().catch(error => { console.error(error.message); process.exitCode = 1; });

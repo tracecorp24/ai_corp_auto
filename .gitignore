@@ -9,6 +9,7 @@ implement/archives/*
 implement/extracted/*
 !implement/extracted/.gitkeep
 storage/workflow.db*
+storage/workflow.acceptance-*.db*
 storage/telegram-state.json
 storage/projects/
 storage/agent-output/

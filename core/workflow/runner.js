@@ -43,8 +43,9 @@ async function main() {
     const task = store.claimTask(worker);
     if (task) {
       let completedRun = null;
+      let result = null;
       try {
-        const result = await execute(task);
+        result = await execute(task);
         if (Array.isArray(result.events)) {
           if (result.events.length > 500) throw new Error('Adapter en çok 500 olay gönderebilir.');
           for (const event of result.events) {
@@ -54,7 +55,7 @@ async function main() {
         completedRun = store.finishTask(task.id, task.lease_token, result.output, result.usage, task.contract_sha256);
         console.log(`${task.id} tamamlandı (${task.department}/${task.kind}).`);
       } catch (error) {
-        store.failTask(task.id, task.lease_token, error.message);
+        store.failTask(task.id, task.lease_token, error.message, result?.usage);
         console.error(`${task.id}: ${error.message}`);
       }
       if (completedRun && githubClient()) {

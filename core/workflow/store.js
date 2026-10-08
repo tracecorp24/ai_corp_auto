@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const { DatabaseSync } = require('node:sqlite');
 const { contractFor } = require('./contracts');
 
-const DEFAULT_DB = path.join(__dirname, '..', '..', 'storage', 'workflow.db');
+const DEFAULT_DB = process.env.AI_CORP_WORKFLOW_DB || path.join(__dirname, '..', '..', 'storage', 'workflow.db');
 
 const SOCIAL_MEDIA_QUESTIONS = [
   { id: 'goal', label: 'İlk hedefin nedir? İş planı, ajans iç aracı, müşteriye sunulacak yazılım veya bunların birleşimi mi?', required: true },
@@ -221,7 +221,7 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
     return getRun(id);
   }
 
-  function submitAnswers(id, submitted) {
+  function submitAnswers(id, submitted, actor = 'owner') {
     const row = selectRun.get(id);
     if (!row) throw Object.assign(new Error('İş akışı bulunamadı.'), { status: 404 });
     if (row.stage !== 'waiting_for_owner') {
@@ -245,7 +245,7 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
     transaction(() => {
       const result = updateRun.run(nextStage, JSON.stringify(answers), now, id, row.version);
       if (result.changes !== 1) throw Object.assign(new Error('Durum değişti; sayfayı yenileyip tekrar deneyin.'), { status: 409 });
-      insertEvent.run(id, missing.length ? 'ANSWERS_SAVED' : 'RESEARCH_READY', 'owner', row.stage, nextStage,
+      insertEvent.run(id, missing.length ? 'ANSWERS_SAVED' : 'RESEARCH_READY', actor, row.stage, nextStage,
         JSON.stringify({ answered_ids: Object.keys(submitted), missing_ids: missing }), now);
       if (!missing.length) enqueue(id, 'research', 'deep', { idea: row.idea, answers }, now);
     });
@@ -342,7 +342,8 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
     }
     if (kind === 'develop' && (!['software', 'document'].includes(output.delivery_type) ||
       !Array.isArray(output.verification) || !output.verification.length ||
-      output.verification.some(v => typeof v.command !== 'string' || !Number.isInteger(v.exit_code) || v.exit_code !== 0))) {
+      output.verification.some(v => typeof v.command !== 'string' || !Number.isInteger(v.exit_code)) ||
+      !output.verification.some(v => v.exit_code === 0))) {
       throw Object.assign(new Error('Teslimat türü ve gerçek doğrulama kaydı gerekli.'), { status: 400 });
     }
     if (kind === 'develop' && output.delivery_type === 'software' && !output.branch) {
@@ -354,6 +355,17 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
     }
     if (kind === 'analyze' && (!Array.isArray(output.findings) || !['ready', 'blocked'].includes(output.merge_recommendation) ||
       typeof output.owner_report !== 'string')) throw Object.assign(new Error('Bulgular ve patron raporu gerekli.'), { status: 400 });
+  }
+
+  function recordUsage(runId, taskId, usage, now) {
+    if (!usage || typeof usage !== 'object' ||
+        (usage.actual_usd == null && usage.estimated_usd == null && usage.input_tokens == null && usage.output_tokens == null)) return;
+    db.prepare(`INSERT INTO workflow_costs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
+      crypto.randomUUID(), runId, taskId, String(usage.provider || 'unknown'), String(usage.model || 'unknown'),
+      Number.isInteger(usage.input_tokens) ? usage.input_tokens : null,
+      Number.isInteger(usage.output_tokens) ? usage.output_tokens : null,
+      Number.isFinite(usage.actual_usd) ? usage.actual_usd : null,
+      Number.isFinite(usage.estimated_usd) ? usage.estimated_usd : null, now);
   }
 
   function finishTask(id, token, output, usage = {}, contractHash) {
@@ -397,29 +409,25 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
             enqueue(task.run_id, 'develop', 'develop', { idea: row.idea, answers: JSON.parse(row.answers_json),
               previous_development: developmentOutput, analysis_feedback: output, revision: cycles }, now);
           } else next = 'blocked';
-        } else next = developmentOutput.branch ? 'github_pending' : 'completed';
+        } else next = developmentOutput.delivery_type === 'software' && developmentOutput.branch ? 'github_pending' : 'completed';
       }
-      db.prepare(`UPDATE workflow_tasks SET status = 'completed', output_json = ?, updated_at = ? WHERE id = ?`).run(JSON.stringify(output), now, id);
+      db.prepare(`UPDATE workflow_tasks SET status = 'completed', output_json = ?, error = NULL, updated_at = ? WHERE id = ?`).run(JSON.stringify(output), now, id);
       updateStage.run(next, questions, now, task.run_id);
       db.prepare("UPDATE agent_runs SET status = 'completed', finished_at = ?, output_json = ? WHERE run_id = ? AND status = 'running' AND json_extract(output_json, '$.task_id') = ?")
         .run(now, JSON.stringify({ task_id: id, summary: output.summary }), task.run_id, id);
-      if (usage && typeof usage === 'object' && (usage.actual_usd != null || usage.estimated_usd != null || usage.input_tokens != null || usage.output_tokens != null)) {
-        db.prepare(`INSERT INTO workflow_costs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
-          crypto.randomUUID(), task.run_id, id, String(usage.provider || 'unknown'), String(usage.model || 'unknown'),
-          Number.isInteger(usage.input_tokens) ? usage.input_tokens : null, Number.isInteger(usage.output_tokens) ? usage.output_tokens : null,
-          Number.isFinite(usage.actual_usd) ? usage.actual_usd : null, Number.isFinite(usage.estimated_usd) ? usage.estimated_usd : null, now);
-      }
+      recordUsage(task.run_id, id, usage, now);
       insertEvent.run(task.run_id, 'TASK_COMPLETED', task.worker, row.stage, next,
         JSON.stringify({ task_id: id, department: task.department, kind: task.kind, contract_sha256: task.contract_sha256 }), now);
     });
     return getRun(task.run_id);
   }
 
-  function failTask(id, token, message) {
+  function failTask(id, token, message, usage = {}) {
     const task = db.prepare('SELECT * FROM workflow_tasks WHERE id = ?').get(id);
     if (!task || task.status !== 'running' || task.lease_token !== token) throw Object.assign(new Error('Görev veya kira anahtarı geçersiz.'), { status: 409 });
     const now = new Date().toISOString();
     transaction(() => {
+      recordUsage(task.run_id, id, usage, now);
       const retry = task.attempt < 3;
       db.prepare('UPDATE workflow_tasks SET status = ?, error = ?, lease_token = NULL, lease_until = NULL, updated_at = ? WHERE id = ?')
         .run(retry ? 'queued' : 'failed', String(message || 'Bilinmeyen hata').slice(0, 2000), now, id);
@@ -431,6 +439,27 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
         retry ? row.stage : 'blocked', JSON.stringify({ task_id: id, attempt: task.attempt, error: String(message).slice(0, 2000) }), now);
     });
     return getRun(task.run_id);
+  }
+
+  function retryBlockedRun(runId, reason, actor = 'owner') {
+    if (typeof reason !== 'string' || !reason.trim() || reason.length > 1000) {
+      throw Object.assign(new Error('Yeniden deneme gerekçesi gerekli.'), { status: 400 });
+    }
+    return transaction(() => {
+      const row = selectRun.get(runId);
+      if (!row || row.stage !== 'blocked') throw Object.assign(new Error('Engellenmiş iş akışı bulunamadı.'), { status: 409 });
+      const task = db.prepare("SELECT * FROM workflow_tasks WHERE run_id = ? AND status = 'failed' ORDER BY updated_at DESC LIMIT 1").get(runId);
+      if (!task) throw Object.assign(new Error('Yeniden denenecek başarısız görev bulunamadı.'), { status: 409 });
+      const next = task.kind === 'preliminary' ? 'preliminary_research' :
+        task.kind === 'deep' ? 'research_ready' : task.kind === 'develop' ? 'developing' : 'analyzing';
+      const now = new Date().toISOString();
+      db.prepare("UPDATE workflow_tasks SET status = 'queued', attempt = 0, worker = NULL, lease_token = NULL, lease_until = NULL, error = NULL, updated_at = ? WHERE id = ?")
+        .run(now, task.id);
+      updateStage.run(next, row.questions_json, now, runId);
+      insertEvent.run(runId, 'MANUAL_RETRY_REQUESTED', actor, 'blocked', next,
+        JSON.stringify({ task_id: task.id, reason: reason.trim() }), now);
+      return getRun(runId);
+    });
   }
 
   function saveLink(runId, kind, key, url, payload = {}) {
@@ -459,7 +488,7 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
     return getRun(runId);
   }
 
-  return { createRun, getRun, listRuns, submitAnswers, reopenForRevision, claimTask, appendTaskEvent, finishTask, failTask, saveLink, completeGitHub, close: () => db.close() };
+  return { createRun, getRun, listRuns, submitAnswers, reopenForRevision, retryBlockedRun, claimTask, appendTaskEvent, finishTask, failTask, saveLink, completeGitHub, close: () => db.close() };
 }
 
 module.exports = { createWorkflowStore, createIntake };

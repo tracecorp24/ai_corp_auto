@@ -4,6 +4,8 @@
 
 Node.js 24+ ve `dashboard/dist` gerekir. `run.bat` yerel sunucuyu başlatır. Codex CLI yüklü ve oturum açık ise varsayılan adaptör seçilir. Başka bir AI için `AI_CORP_AGENT_EXECUTABLE` ve `AI_CORP_AGENT_ARGS_JSON` ayarlanır; protokol `departments/WORKER_PROTOCOL.md` dosyasındadır. Her görev, ilgili departmanın Markdown içeriğini ve SHA256 özetini veritabanında saklar. Model değiştirmek eski görevlerin sözleşmesini değiştirmez.
 
+`AI_CORP_WORKFLOW_DB` isteğe bağlı ayrı SQLite dosyası seçer; kabul koşularını canlı işlerden ayırmak için kullanılır. `AI_CORP_CODEX_SANDBOX` Codex CLI için `read-only`, `workspace-write` veya `danger-full-access` olabilir. Son seçenek Codex'e makinede geniş dosya ve komut erişimi verir; yalnızca güvenilir yerel denemede bilinçli olarak ayarlayın. Normal Research/Analyze görevleri `read-only`, Develop görevleri `workspace-write` ile çalışır.
+
 Örnek PowerShell yapılandırması (değerler örnektir, sırları dosyaya yazmayın):
 
 ```powershell
@@ -37,6 +39,6 @@ Bu bir genel HTTP protokolüdür; GPT Remote içinde ayrı bir araç tanımı ku
 
 ## İşçi ve denetim
 
-Harici AI işçisi `POST /api/worker/claim` ile görevi alır ve sonuç için `complete` veya `fail` çağırır. Yerel adaptör aynı SQLite kuyruğunu kullanır. Kira 15 dakikadır; üç başarısız deneme akışı `blocked` durumuna geçirir. Her deneme, sözleşme özeti ve durum geçişi kaydedilir. `actual_usd` yalnızca sağlayıcının bildirdiği gerçek ücretse yazılır; bildirilmeyen maliyet sıfır varsayılmaz, boş kalır.
+Harici AI işçisi `POST /api/worker/claim` ile görevi alır ve sonuç için `complete` veya `fail` çağırır. Yerel adaptör aynı SQLite kuyruğunu kullanır. Kira 15 dakikadır; üç başarısız deneme akışı `blocked` durumuna geçirir. Her deneme, sözleşme özeti ve durum geçişi kaydedilir. Yerel adaptörde şema doğrulaması başarısız olsa da sağlayıcının bildirdiği token kullanımı saklanır. `actual_usd` yalnızca sağlayıcının bildirdiği gerçek ücretse yazılır; bildirilmeyen maliyet sıfır varsayılmaz, boş kalır.
 
 Kabul senaryosu: fikir → kaynaklı ön araştırma → sorular → patron cevabı → kaynaklı derin araştırma → Develop çalışma alanı ve doğrulama → Analyze raporu/issues → CI/Analyze kapısından sonra otomatik merge. İlk sosyal medya ajansı kaydı (`ede5fceb-3efd-4431-91ef-473f6fd37e95`) patron cevaplarıyla Research, Develop ve beş Analyze turundan geçti. `storage/projects/<run-id>` içinde çalışan müşteri yönetimi MVP'si, yerel `main` tabanı, çalışma dalı, GitHub Actions CI, sürüm ve issue iş akışları vardır. Durum `github_pending`: ayrı GitHub deposu/kimlik bilgisi, PR, gerçek CI sonucu ve merge bekleniyor. Bu eski kayıt kural tabanlı ön sorularla başladığı için ön araştırma kaynaklı sayılmaz; derin araştırma kaynaklıdır. Ana yazılımın sürüm/issue kuralları `VERSIONING.md` içindedir.
