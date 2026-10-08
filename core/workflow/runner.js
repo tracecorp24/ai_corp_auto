@@ -55,7 +55,7 @@ async function main() {
         completedRun = store.finishTask(task.id, task.lease_token, result.output, result.usage, task.contract_sha256);
         console.log(`${task.id} tamamlandı (${task.department}/${task.kind}).`);
       } catch (error) {
-        store.failTask(task.id, task.lease_token, error.message, result?.usage);
+        store.failTask(task.id, task.lease_token, error.message, result?.usage, result?.output?.audit_artifact);
         console.error(`${task.id}: ${error.message}`);
       }
       if (completedRun && githubClient()) {

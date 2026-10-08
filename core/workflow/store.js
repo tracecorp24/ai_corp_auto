@@ -422,7 +422,7 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
     return getRun(task.run_id);
   }
 
-  function failTask(id, token, message, usage = {}) {
+  function failTask(id, token, message, usage = {}, auditArtifact = null) {
     const task = db.prepare('SELECT * FROM workflow_tasks WHERE id = ?').get(id);
     if (!task || task.status !== 'running' || task.lease_token !== token) throw Object.assign(new Error('Görev veya kira anahtarı geçersiz.'), { status: 409 });
     const now = new Date().toISOString();
@@ -431,12 +431,13 @@ function createWorkflowStore(dbPath = DEFAULT_DB) {
       const retry = task.attempt < 3;
       db.prepare('UPDATE workflow_tasks SET status = ?, error = ?, lease_token = NULL, lease_until = NULL, updated_at = ? WHERE id = ?')
         .run(retry ? 'queued' : 'failed', String(message || 'Bilinmeyen hata').slice(0, 2000), now, id);
-      db.prepare("UPDATE agent_runs SET status = 'failed', finished_at = ? WHERE run_id = ? AND status = 'running' AND json_extract(output_json, '$.task_id') = ?")
-        .run(now, task.run_id, id);
+      db.prepare("UPDATE agent_runs SET status = 'failed', finished_at = ?, output_json = ? WHERE run_id = ? AND status = 'running' AND json_extract(output_json, '$.task_id') = ?")
+        .run(now, JSON.stringify({ task_id: id, attempt: task.attempt, error: String(message).slice(0, 2000), audit_artifact: auditArtifact }), task.run_id, id);
       const row = selectRun.get(task.run_id);
       if (!retry) updateStage.run('blocked', row.questions_json, now, task.run_id);
       insertEvent.run(task.run_id, retry ? 'TASK_RETRY_QUEUED' : 'TASK_FAILED', task.worker, row.stage,
-        retry ? row.stage : 'blocked', JSON.stringify({ task_id: id, attempt: task.attempt, error: String(message).slice(0, 2000) }), now);
+        retry ? row.stage : 'blocked', JSON.stringify({ task_id: id, attempt: task.attempt,
+          error: String(message).slice(0, 2000), audit_artifact: auditArtifact }), now);
     });
     return getRun(task.run_id);
   }
