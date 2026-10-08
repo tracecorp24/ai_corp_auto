@@ -18,7 +18,7 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
-      - name: Mark open issues needing a priority decision
+      - name: Apply priority labels and mark undecided issues
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -26,8 +26,25 @@ jobs:
         run: |
           set -euo pipefail
           gh label create needs-triage --color FBCA04 --description 'Priority and owner need review' --force
-          gh issue list --state open --limit 500 --json number,labels \
-            --jq '.[] | select(([.labels[].name] | any(startswith("priority:"))) | not) | .number' |
-          while IFS= read -r issue; do
-            [[ -n "$issue" ]] && gh issue edit "$issue" --add-label needs-triage
+          gh label create priority:blocker --color B60205 --description 'Merge blocker' --force
+          gh label create priority:high --color D93F0B --description 'High priority' --force
+          gh label create priority:medium --color FBCA04 --description 'Medium priority' --force
+          gh label create priority:low --color 0E8A16 --description 'Low priority' --force
+          gh issue list --state open --limit 500 --json number,title,labels \
+            --jq '.[] | [.number, .title, ([.labels[].name] | join(","))] | @tsv' |
+          while IFS=$'\t' read -r issue title labels; do
+            [[ -z "$issue" ]] && continue
+            if [[ ",$labels," == *",priority:"* ]]; then
+              priority_present=true
+            elif [[ "$title" =~ ^\[(blocker|high|medium|low)\] ]]; then
+              gh issue edit "$issue" --add-label "priority:${BASH_REMATCH[1]}"
+              priority_present=true
+            else
+              priority_present=false
+            fi
+            if [[ "$priority_present" == true && ",$labels," == *",needs-triage,"* ]]; then
+              gh issue edit "$issue" --remove-label needs-triage
+            elif [[ "$priority_present" == false && ",$labels," != *",needs-triage,"* ]]; then
+              gh issue edit "$issue" --add-label needs-triage
+            fi
           done

@@ -1,0 +1,18 @@
+{
+  "summary": "Issue öncelik etiketlemesi ve son yerel commit incelendi; canlı GitHub işlemleri ayrı depo bekliyor.",
+  "requirements_checked": ["Analyze önem başlığı ve GitHub priority etiketi", "Önceliği belirsiz issue için needs-triage", "Haftalık ve issue açılışında triage", "İzole Git dalı"],
+  "findings": [
+    {
+      "severity": "medium",
+      "title": "Ajans GitHub iş akışları henüz canlı çalışmadı",
+      "steps": "Ayrı depoyu oluşturup dalları aktar; Actions ve issue etiketlerini kontrol et.",
+      "expected": "CI, sürüm ve issue etiketleri GitHub'da görünür.",
+      "actual": "Yerel dal hazır fakat uzak depo bağlantısı yok.",
+      "reference": ".github/workflows"
+    }
+  ],
+  "issues": [],
+  "owner_report": "Ana AI Corp deposu GitHub'da yayımlandı; CI ve otomatik sürüm çalıştı, yüksek öncelikli GitHub onboarding issue'su açıldı. Ajans CRM'nin kendi yerel dalında da CI, otomatik sürüm, issue şablonları ve öncelik etiketleri hazır. Son commit 34c35b818320759eeeabd027beb9406594a74621. Ajans için ayrı depo henüz yok; PR, canlı CI ve merge yapılmadı. Gerçek model maliyeti ölçülemedi.",
+  "merge_recommendation": "ready",
+  "limitations": ["Ayrı GitHub deposu ve yazma erişimi bekleniyor.", "Gerçek mobil tarayıcı doğrulaması yapılmadı.", "Model maliyeti ölçülemedi."]
+}
