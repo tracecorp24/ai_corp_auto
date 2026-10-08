@@ -1,0 +1,19 @@
+{
+  "summary": "Ajans CRM deposuna otomatik PATCH release, haftalık issue triage, bug/iyileştirme şablonları ve PR kayıt biçimi eklendi.",
+  "delivery_type": "software",
+  "workspace": "D:/ai_corp/storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95",
+  "files_changed": [".github/workflows/release.yml", ".github/workflows/issue-triage.yml", ".github/ISSUE_TEMPLATE/bug.yml", ".github/ISSUE_TEMPLATE/improvement.yml", ".github/pull_request_template.md", "VERSIONING.md"],
+  "run_instructions": "Ayrı GitHub deposu bağlandıktan sonra main ve ai-corp/ede5fceb dallarını aktar; PR CI sonucunu bekle; Analyze kapısı ve CI başarılıysa merge et.",
+  "verification": [
+    {"command": "git diff --cached --check", "exit_code": 0, "output": "Yeni yönetişim dosyalarında whitespace hatası yok."},
+    {"command": "git rev-parse HEAD", "exit_code": 0, "output": "d694779a1da4aa2d5e0c05be2c79acc05a478874"}
+  ],
+  "sources_used": [
+    {"repository": "marmelab/react-admin", "license_spdx": "MIT"},
+    {"repository": "KamilGunduz/ra-language-turkish", "license_spdx": "MIT"}
+  ],
+  "commit": "d694779a1da4aa2d5e0c05be2c79acc05a478874",
+  "branch": "ai-corp/ede5fceb",
+  "pull_request": null,
+  "limitations": ["Ayrı GitHub deposu henüz oluşturulmadı; uzaktaki CI ve release tetiklenmedi.", "Yerel tarayıcıda mobil görsel doğrulama tamamlanmadı."]
+}

@@ -9,7 +9,7 @@
 - Yeni fikirler önce gerçek `research/preliminary` görevine giriyor. Herhangi bir AI, aynı Markdown sözleşmesini içeren görev paketini alabilir. Cevaplardan sonra Research deep → Develop → Analyze devirleri otomatik kuyruğa alınır.
 - Yerel komut adaptörü, Codex CLI köprüsü, GitHub PR/issue/merge eşitleyicisi, Telegram botu ve ayrı tokenlı remote API eklendi. Dış bağlantılar kimlik bilgisi ve hedef depo yapılandırması olmadan canlı çalışmaz.
 - Mevcut ilk kayıt eski kural tabanlı soru akışından geldi; bu kayıtta kaynaklı ön araştırma yapılmış sayılmaz. Sonraki derin araştırma kaynaklıdır.
-- Sosyal medya ajansı için ayrı yerel Git deposunda çalışan müşteri yönetimi MVP'si geliştirildi. İlk Analyze turunun Türkçe sistem metni bulgusu Develop'e döndü ve düzeltildi. Sonraki revizyonda PR için boş `main` tabanı ve GitHub Actions CI eklendi; üçüncü Analyze turu merge için hazır dedi. Gerçek GitHub hedefi ve hesap erişimi eksik olduğu için durum `github_pending`.
+- Sosyal medya ajansı için ayrı yerel Git deposunda çalışan müşteri yönetimi MVP'si geliştirildi. İlk Analyze turunun Türkçe sistem metni bulgusu Develop'e döndü ve düzeltildi. Sonraki revizyonda PR için boş `main` tabanı ve GitHub Actions CI eklendi. Dördüncü Analyze turunda otomatik sürüm ve issue düzeni incelenip hazır bulundu. Gerçek GitHub hedefi ve hesap erişimi eksik olduğu için durum `github_pending`.
 
 ## Uygulanan durum ve kalan bağlantılar
 

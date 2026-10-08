@@ -1,0 +1,26 @@
+{
+  "summary": "Ajans CRM'nin son yönetişim commit'i incelendi. PR, sürüm ve issue şablonları yerel dalda tutarlı; canlı GitHub yürütmesi depo bağlantısını bekliyor.",
+  "requirements_checked": ["CRM kalite kapısı", "Başarılı main build sonrası release", "Haftalık issue triage", "Bug ve iyileştirme şablonları", "PR ve Analyze ilişkilendirmesi", "Git dalı ve commit"],
+  "findings": [
+    {
+      "severity": "medium",
+      "title": "Ayrı GitHub deposunda iş akışları henüz doğrulanmadı",
+      "steps": "Depoyu oluştur, dalları aktar, PR aç ve Actions sonuçlarını izle.",
+      "expected": "CI, issue triage ve release iş akışları GitHub'da çalışır.",
+      "actual": "Yerel dalda tanımlar mevcut; hedef depo henüz oluşturulmadığından canlı sonuç yok.",
+      "reference": ".github/workflows"
+    },
+    {
+      "severity": "medium",
+      "title": "Mobil tarayıcı doğrulaması tamamlanmadı",
+      "steps": "CRM'yi mobil tarayıcıda açıp müşteri akışlarını incele.",
+      "expected": "Mobil etkileşim gerçek tarayıcıda doğrulanır.",
+      "actual": "Bu oturumda yerel tarayıcı erişimi verilmedi; kod ve API doğrulaması kaydedildi.",
+      "reference": "src/App.tsx"
+    }
+  ],
+  "issues": [],
+  "owner_report": "Ajans CRM çalışan yerel MVP'si, kaynak ve lisans kayıtları, Türkçe arayüz, CI, sürüm ve issue yönetişimiyle hazır. Son dal ai-corp/ede5fceb, commit d694779a1da4aa2d5e0c05be2c79acc05a478874. Otomatik release yalnızca başarılı main CI ve yeni commit sonrası oluşacak; haftalık triage önceliği belirlenmemiş açık issue'ları işaretleyecek. Gerçek model maliyeti ölçülemedi. Ayrı GitHub deposu bulunmadığı için PR, issue URL, canlı CI, release ve merge henüz yok.",
+  "merge_recommendation": "ready",
+  "limitations": ["Ayrı GitHub deposu ve yazma bağlantısı gerekiyor.", "GitHub Actions henüz çalışmadı.", "Mobil görsel doğrulama yapılmadı.", "Gerçek model maliyeti ölçülemedi."]
+}
