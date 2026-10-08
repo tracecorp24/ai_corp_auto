@@ -1,0 +1,21 @@
+{
+  "summary": "CRM dalına otomatik CI kalite kapısı eklendi ve ayrı boş GitHub deposuyla PR açılabilecek ortak main tabanı oluşturuldu.",
+  "delivery_type": "software",
+  "workspace": "D:/ai_corp/storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95",
+  "files_changed": [".github/workflows/ci.yml"],
+  "run_instructions": "cd D:/ai_corp/storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95; npm install; npm run build; npm start; http://127.0.0.1:3100",
+  "verification": [
+    {"command": "npm run build", "exit_code": 0, "output": "Vite 6.4.4 üretim derlemesi geçti; paket boyutu uyarısı var."},
+    {"command": "npx tsc --noEmit", "exit_code": 0, "output": "TypeScript tip kontrolü geçti."},
+    {"command": "npm audit --audit-level=high", "exit_code": 0, "output": "0 güvenlik uyarısı."},
+    {"command": "git merge-base main ai-corp/ede5fceb", "exit_code": 0, "output": "Ortak taban 2c5c96274b4904efdf6c36c15a1e7dda0b7d39be."}
+  ],
+  "sources_used": [
+    {"repository": "marmelab/react-admin", "commit": "47890673cae903b9c5a33898c07a12ea94205b5a", "license_spdx": "MIT"},
+    {"repository": "KamilGunduz/ra-language-turkish", "commit": "d1c388debf496649107bf474aa098dd2a780120b", "license_spdx": "MIT"}
+  ],
+  "commit": "7eefbd95e3c08cc40e89a5344bbad400d14a7f04",
+  "branch": "ai-corp/ede5fceb",
+  "pull_request": null,
+  "limitations": ["CI henüz GitHub üzerinde çalışmadı; hedef depo bağlantısı bekleniyor.", "Mobil tarayıcı görsel kontrolü tamamlanmadı."]
+}

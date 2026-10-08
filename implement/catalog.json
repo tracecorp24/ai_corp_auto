@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "marmelab/react-admin",
+    "commit": "47890673cae903b9c5a33898c07a12ea94205b5a",
+    "license_spdx": "MIT",
+    "license_url": "https://github.com/marmelab/react-admin/blob/47890673cae903b9c5a33898c07a12ea94205b5a/LICENSE.md",
+    "archive_sha256": "30ffa77e24ae659f1d9b0b5dff053b950d77b723eefc78f30d8bd72baa87d0de",
+    "archive": "archives/marmelab__react-admin__47890673cae9.zip",
+    "extracted": "extracted/marmelab__react-admin__47890673cae9",
+    "copied_files": [
+      {
+        "source": "packages/create-react-admin/templates/common/index.html",
+        "target": "storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95/index.html",
+        "reason": "React-admin başlangıç HTML şablonu; Türkçe ve yerel ayarlar için uyarlandı"
+      },
+      {
+        "source": "packages/create-react-admin/templates/common/src/Layout.tsx",
+        "target": "storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95/src/Layout.tsx",
+        "reason": "React-admin yerleşim bileşeni"
+      },
+      {
+        "source": "LICENSE.md",
+        "target": "storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95/THIRD_PARTY_LICENSES/react-admin-LICENSE.md",
+        "reason": "MIT lisans atfı"
+      }
+    ]
+  },
+  {
+    "repository": "KamilGunduz/ra-language-turkish",
+    "commit": "d1c388debf496649107bf474aa098dd2a780120b",
+    "license_spdx": "MIT",
+    "license_url": "https://github.com/kamilgunduz/ra-language-turkish/blob/d1c388debf496649107bf474aa098dd2a780120b/LICENSE",
+    "archive_sha256": "799068ac6cb9ebfa33a5720defa583c640cca4bd5767e42eb211cb67b9943e86",
+    "archive": "archives/KamilGunduz__ra-language-turkish__d1c388debf49.zip",
+    "extracted": "extracted/KamilGunduz__ra-language-turkish__d1c388debf49",
+    "copied_files": []
+  }
+]

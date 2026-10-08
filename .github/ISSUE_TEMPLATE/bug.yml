@@ -1,0 +1,29 @@
+name: Hata bildirimi
+description: AI Corp ana yazılımındaki kanıtlanabilir hatayı kaydet
+title: '[bug] '
+body:
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Önem
+      options: [blocker, high, medium, low]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Yeniden üretme adımları
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Beklenen ve gerçek sonuç
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Kanıt ve ilgili sürüm
+    validations:
+      required: true

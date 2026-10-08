@@ -1,0 +1,14 @@
+node_modules/
+dashboard/node_modules/
+.worktrees/
+*.log
+.DS_Store
+Thumbs.db
+implement/archives/*
+!implement/archives/.gitkeep
+implement/extracted/*
+!implement/extracted/.gitkeep
+storage/workflow.db*
+storage/telegram-state.json
+storage/projects/
+storage/agent-output/

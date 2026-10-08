@@ -1,0 +1,48 @@
+name: Version after successful main build
+
+on:
+  workflow_run:
+    workflows: [AI Corp quality gate]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ai-corp-release-main
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Publish next patch version when main has new commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERIFIED_SHA: ${{ github.event.workflow_run.head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="${VERIFIED_SHA:-$(git rev-parse origin/main)}"
+          latest="$(git tag -l 'v*' --sort=-v:refname | head -n 1)"
+          if [[ -n "$latest" && "$(git rev-list -n 1 "$latest")" == "$target" ]]; then
+            echo "main has no unreleased commit"
+            exit 0
+          fi
+          if [[ -n "$latest" ]] && ! git merge-base --is-ancestor "$latest" "$target"; then
+            echo "A newer release already covers this commit"
+            exit 0
+          fi
+          if [[ "$latest" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            version="v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.$((BASH_REMATCH[3] + 1))"
+          else
+            version="v0.1.0"
+          fi
+          gh release create "$version" --target "$target" --generate-notes --fail-on-no-commits

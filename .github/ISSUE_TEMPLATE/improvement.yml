@@ -1,0 +1,22 @@
+name: İyileştirme
+description: Ölçülebilir ürün veya mimari geliştirmesi öner
+title: '[improvement] '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Sorun ve etkisi
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Önerilen çözüm
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Kabul ölçütleri
+    validations:
+      required: true

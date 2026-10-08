@@ -1,0 +1,26 @@
+{
+  "summary": "Türkçe arayüz bulgusu kapatıldı. İlk müşteri yönetimi MVP'si yerel Git teslimatı için hazır; GitHub devri dış bağlantı bekliyor.",
+  "requirements_checked": ["Türkçe yönetim metinleri", "Mobil liste bileşeni", "Müşteri CRUD API", "Türkçe dil paketi MIT lisansı", "Build, tür kontrolü ve bağımlılık denetimi", "Git commit ve dal"],
+  "findings": [
+    {
+      "severity": "medium",
+      "title": "Mobil tarayıcı doğrulaması henüz yapılmadı",
+      "steps": "Uygulamayı mobil tarayıcıda açıp liste, form ve dokunmatik gezinmeyi kontrol et.",
+      "expected": "Gerçek tarayıcıda mobil kullanılabilirlik doğrulanmış olur.",
+      "actual": "Bu oturumda yerel tarayıcı erişimi reddedildi; build ve HTTP API doğrulaması mevcut.",
+      "reference": "src/App.tsx"
+    },
+    {
+      "severity": "low",
+      "title": "İlk JavaScript paketi büyük",
+      "steps": "npm run build çıktısını incele.",
+      "expected": "Mobil indirme boyutu düşük tutulur.",
+      "actual": "Ana paket yaklaşık 1,023 kB ham, 324 kB gzip; Vite 500 kB uyarısı veriyor.",
+      "reference": "dist/assets/index-*.js"
+    }
+  ],
+  "issues": [],
+  "owner_report": "İlk girdi: Türkiye'deki yerel işletmeler için Instagram/TikTok hizmeti verecek ajansın Türkçe iç müşteri yönetimi aracı; hedef süre 3 ay. Çıktı: yerel SQLite tabanlı müşteri ekleme, arama, düzenleme ve silme akışları olan, mobil liste kullanan çalışan MVP; yerel Git dalı ai-corp/ede5fceb, son commit d6422e34fb9957d583ded1919f0b4cf8f858776b. Açık kaynak: React-admin şablonu ve ra-language-turkish (MIT); kaynak/lisans kayıtları depoda. npm audit 0 uyarı; gerçek model maliyeti ölçülemedi. Mobil tarayıcı doğrulaması ve ayrı GitHub deposuna PR/merge açık kaldı.",
+  "merge_recommendation": "ready",
+  "limitations": ["Ayrı GitHub deposu henüz oluşturulmadı ve kimlik bilgisi yok.", "Gerçek tarayıcıda mobil görsel doğrulama yapılamadı.", "Gerçek model kullanımı ve API bedeli ölçülemedi."]
+}

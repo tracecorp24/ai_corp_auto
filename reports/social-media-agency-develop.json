@@ -1,0 +1,25 @@
+{
+  "summary": "Türkçe, mobil uyumlu müşteri yönetim MVP'si React-admin, Node 24 ve SQLite ile yerel çalışır durumda hazırlandı. Müşteri ekleme, arama, düzenleme, ayrıntı, platform bağlantıları ve sıradaki iş alanları var.",
+  "delivery_type": "software",
+  "workspace": "D:/ai_corp/storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95",
+  "files_changed": ["src/App.tsx", "src/dataProvider.ts", "src/Layout.tsx", "src/index.tsx", "src/query-string-compat.js", "server.cjs", "index.html", "package.json", "package-lock.json", "vite.config.js", "README.md", "THIRD_PARTY_LICENSES/react-admin-LICENSE.md"],
+  "run_instructions": "cd D:/ai_corp/storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95; npm install; npm run build; npm start; http://127.0.0.1:3100",
+  "verification": [
+    {"command": "npm run build", "exit_code": 0, "output": "Vite 6.4.4 üretim derlemesi geçti; 2315 modül, dist çıktı üretildi."},
+    {"command": "npx tsc --noEmit", "exit_code": 0, "output": "TypeScript tip kontrolü geçti."},
+    {"command": "PowerShell HTTP CRUD smoke: health, create, list, update, soft delete", "exit_code": 0, "output": "health=true; created=true; listed=1; updated=active; afterDelete=0"},
+    {"command": "npm audit", "exit_code": 0, "output": "0 güvenlik uyarısı."}
+  ],
+  "sources_used": [
+    {"repository": "marmelab/react-admin", "commit": "47890673cae903b9c5a33898c07a12ea94205b5a", "license_spdx": "MIT", "copied_files": ["packages/create-react-admin/templates/common/index.html", "packages/create-react-admin/templates/common/src/Layout.tsx", "LICENSE.md"]}
+  ],
+  "commit": "933b16c232edfc99530c1971c20e43df0882cd9c",
+  "branch": "ai-corp/ede5fceb",
+  "pull_request": null,
+  "limitations": [
+    "Ayrı GitHub deposu henüz oluşturulmadı; yerel dalın origin'i yok ve PR açılamadı.",
+    "Uygulama tek yerel operatör için; kullanıcı girişi ve çok kullanıcılı paylaşım yok.",
+    "Instagram/TikTok otomatik yayımlama yok; profil bağlantıları manuel tutulur.",
+    "Tarayıcı üzerinden görsel doğrulama yapılamadı; build, tip kontrolü ve HTTP API doğrulandı."
+  ]
+}

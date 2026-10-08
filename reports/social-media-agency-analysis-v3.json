@@ -1,0 +1,26 @@
+{
+  "summary": "Son Git commit incelendi: MVP dosyaları main tabanına göre PR farkında; CI build, tip, audit ve lisans denetimlerini tanımlıyor. GitHub'daki gerçek CI sonucu bekleniyor.",
+  "requirements_checked": ["Ayrı depo için ortak main Git geçmişi", "PR dalında tüm MVP farkı", "GitHub Actions kalite kapısı", "Türkçe arayüz", "Kaynak/lisans envanteri", "Yerel build, tür ve bağımlılık doğrulaması"],
+  "findings": [
+    {
+      "severity": "medium",
+      "title": "Mobil tarayıcı doğrulaması henüz yapılmadı",
+      "steps": "Uygulamayı mobil tarayıcıda açıp müşteri liste, oluşturma ve düzenleme akışını dene.",
+      "expected": "Gerçek tarayıcıda mobil etkileşim doğrulanır.",
+      "actual": "Yerel tarayıcıya erişim bu oturumda reddedildi; yalnızca derleme ve API doğrulaması var.",
+      "reference": "src/App.tsx"
+    },
+    {
+      "severity": "low",
+      "title": "Ana JavaScript paketi büyük",
+      "steps": "npm run build çıktısındaki bundle boyutunu incele.",
+      "expected": "Mobil indirme boyutu küçük tutulur.",
+      "actual": "Ana paket yaklaşık 1,023 kB ham ve 324 kB gzip; Vite uyarısı veriyor.",
+      "reference": "dist/assets/index-*.js"
+    }
+  ],
+  "issues": [],
+  "owner_report": "Başlangıç isteği: Türkiye'deki yerel işletmeler için Instagram/TikTok odaklı ajans iç müşteri yönetimi, Türkçe, üç ay. İlk çalışan sürüm yerel Git deposunda müşteri CRUD, arama, not, platform profili ve mobil liste sağlar. Research React-admin ve Türkçe dil paketini seçti; her ikisi MIT ve implement kataloğunda sabit commit/arşiv özetiyle izleniyor. Analyze Türkçe sistem metni açığını buldu, Develop düzeltti. Son dal ai-corp/ede5fceb, commit 7eefbd95e3c08cc40e89a5344bbad400d14a7f04; CI tanımlı ve yerelde build, tip kontrolü ve npm audit geçti. Gerçek model maliyeti ölçülemedi. Ayrı GitHub deposu henüz bağlanmadığı için PR, issue bağlantıları, GitHub CI sonucu ve merge yok.",
+  "merge_recommendation": "ready",
+  "limitations": ["GitHub deposu ve yazma erişimi bekleniyor.", "GitHub Actions henüz çalışmadı.", "Mobil tarayıcıda görsel doğrulama yapılamadı.", "Gerçek model maliyeti ölçülemedi."]
+}

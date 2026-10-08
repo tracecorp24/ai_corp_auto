@@ -1,0 +1,41 @@
+{
+  "summary": "Türkiye'de yerel işletmelere Instagram ve TikTok hizmeti verecek ajans için ilk yazılım teslimatı, tek operatörlü yerel müşteri yönetim aracıdır. Platformlarda otomatik yayımlama ilk kapsamda gerekli değildir.",
+  "first_delivery": "Türkçe, mobil uyumlu müşteri yönetim MVP'si: müşteri/iletişim kaydı, Instagram ve TikTok profil bağlantıları, hizmet paketi, aşama, not ve sıradaki iş; yerel kalıcı depolama.",
+  "success_criteria": [
+    "Müşteri ekleme, düzenleme, arama ve görüntüleme çalışır.",
+    "Her müşteriye Instagram/TikTok bağlantısı, hizmet paketi, durum ve not kaydedilebilir.",
+    "Kayıtlar uygulama yeniden başlatıldıktan sonra korunur.",
+    "Dar mobil ekranda temel işlemler kullanılabilir.",
+    "Çalıştırma ve doğrulama komutları ile gerçek sonuçları kaydedilir."
+  ],
+  "options": [
+    {"name": "Hafif özel uygulama", "decision": "recommended", "reason": "Tek bilgisayar ve üç aylık MVP için düşük kurulum yükü; React + Node + SQLite ile kapsam doğrudan modellenebilir."},
+    {"name": "React-admin", "decision": "candidate", "reason": "MIT lisanslı CRUD arayüzü; veri sağlayıcı ve Material UI entegrasyon maliyeti getirir."},
+    {"name": "Tam CRM çatallama", "decision": "defer", "reason": "İlk müşteri yönetim kapsamına göre kurulum ve bakım yüzeyi büyük."}
+  ],
+  "sources": [
+    {"url": "https://developers.tiktok.com/docs/en/content-posting-api-get-started", "claim": "TikTok doğrudan paylaşım için uygulama kaydı, video.publish onayı ve kullanıcı izni gerekir.", "accessed_at": "2026-10-08"},
+    {"url": "https://developers.tiktok.com/docs/en/content-posting-api-reference-direct-post", "claim": "Denetlenmemiş istemcilerde paylaşım görünürlüğü kısıtlıdır.", "accessed_at": "2026-10-08"},
+    {"url": "https://github.com/marmelab/react-admin/blob/47890673cae903b9c5a33898c07a12ea94205b5a/LICENSE.md", "claim": "React-admin MIT lisanslıdır.", "accessed_at": "2026-10-08"},
+    {"url": "https://github.com/bigcalendar/react-big-calendar/blob/183783ad45c8b845c2f57c46711c1c4c85047843/LICENSE", "claim": "React Big Calendar MIT lisanslıdır.", "accessed_at": "2026-10-08"}
+  ],
+  "candidates": [
+    {"repository": "marmelab/react-admin", "url": "https://github.com/marmelab/react-admin", "commit": "47890673cae903b9c5a33898c07a12ea94205b5a", "license_spdx": "MIT", "license_url": "https://github.com/marmelab/react-admin/blob/47890673cae903b9c5a33898c07a12ea94205b5a/LICENSE.md", "use": "Müşteri liste ve form arayüzü; arşiv implement/ içine indirildi."},
+    {"repository": "bigcalendar/react-big-calendar", "url": "https://github.com/bigcalendar/react-big-calendar", "commit": "183783ad45c8b845c2f57c46711c1c4c85047843", "license_spdx": "MIT", "license_url": "https://github.com/bigcalendar/react-big-calendar/blob/183783ad45c8b845c2f57c46711c1c4c85047843/LICENSE", "use": "İçerik takvimi için sonraki iterasyon adayı."}
+  ],
+  "unknowns": [
+    "İlk kullanıcı sayısı ve kullanıcı girişi ihtiyacı belirtilmedi; ilk sürüm tek yerel operatör kabul eder.",
+    "Kesin sayısal başarı metriği belirtilmedi; işlevsel kabul ölçütleri önerildi.",
+    "Instagram/TikTok hesap API entegrasyonu için müşteri yetkileri henüz yok; ilk sürümde manuel bağlantı tutulur.",
+    "Ayrı GitHub deposunun URL'si ve yerel Git yazma yetkisi henüz sağlanmadı."
+  ],
+  "handoff": {
+    "architecture": "Tek bilgisayar: React/Vite arayüzü, Node 24 HTTP API, SQLite kalıcı veri. Uygulama 127.0.0.1 üzerinde.",
+    "entities": ["clients", "contacts", "social_accounts", "service_packages", "notes", "tasks"],
+    "screens": ["Müşteri listesi ve arama", "Müşteri ekleme/düzenleme", "Müşteri ayrıntısı ve sıradaki iş"],
+    "exclusions": ["Otomatik sosyal medya yayımlama", "Çok kullanıcılı giriş", "Ücretli reklam satın alma"],
+    "workspace": "storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95",
+    "report_path": "reports/social-media-agency-research.md"
+  },
+  "report_path": "reports/social-media-agency-research.md"
+}

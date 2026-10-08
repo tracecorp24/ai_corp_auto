@@ -1,0 +1,152 @@
+[
+  {
+    "id": "tel-1791409579706-759",
+    "timestamp": "2026-10-07T21:46:19.706Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 448,
+    "completion_tokens": 524,
+    "cost_usd": 0.0101
+  },
+  {
+    "id": "tel-1791409583401-86",
+    "timestamp": "2026-10-07T21:46:23.401Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0136
+  },
+  {
+    "id": "tel-1791409583407-373",
+    "timestamp": "2026-10-07T21:46:23.407Z",
+    "project_id": "proj-002",
+    "agent_name": "Nova",
+    "model": "claude-3-5-sonnet",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0121
+  },
+  {
+    "id": "tel-1791409593409-937",
+    "timestamp": "2026-10-07T21:46:33.409Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0141
+  },
+  {
+    "id": "tel-1791409593410-572",
+    "timestamp": "2026-10-07T21:46:33.410Z",
+    "project_id": "proj-002",
+    "agent_name": "Nova",
+    "model": "claude-3-5-sonnet",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0158
+  },
+  {
+    "id": "tel-1791409603413-637",
+    "timestamp": "2026-10-07T21:46:43.413Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0019
+  },
+  {
+    "id": "tel-1791409603415-748",
+    "timestamp": "2026-10-07T21:46:43.415Z",
+    "project_id": "proj-002",
+    "agent_name": "Nova",
+    "model": "claude-3-5-sonnet",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0008
+  },
+  {
+    "id": "tel-1791409613417-799",
+    "timestamp": "2026-10-07T21:46:53.417Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0131
+  },
+  {
+    "id": "tel-1791409613419-90",
+    "timestamp": "2026-10-07T21:46:53.419Z",
+    "project_id": "proj-002",
+    "agent_name": "Nova",
+    "model": "claude-3-5-sonnet",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0145
+  },
+  {
+    "id": "tel-1791409623430-102",
+    "timestamp": "2026-10-07T21:47:03.430Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0146
+  },
+  {
+    "id": "tel-1791409623431-44",
+    "timestamp": "2026-10-07T21:47:03.431Z",
+    "project_id": "proj-002",
+    "agent_name": "Nova",
+    "model": "claude-3-5-sonnet",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0018
+  },
+  {
+    "id": "tel-1791409633431-722",
+    "timestamp": "2026-10-07T21:47:13.431Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0036
+  },
+  {
+    "id": "tel-1791409633431-444",
+    "timestamp": "2026-10-07T21:47:13.431Z",
+    "project_id": "proj-002",
+    "agent_name": "Nova",
+    "model": "claude-3-5-sonnet",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0069
+  },
+  {
+    "id": "tel-1791409643442-235",
+    "timestamp": "2026-10-07T21:47:23.442Z",
+    "project_id": "proj-001",
+    "agent_name": "Atlas",
+    "model": "gpt-4o",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0008
+  },
+  {
+    "id": "tel-1791409643446-404",
+    "timestamp": "2026-10-07T21:47:23.446Z",
+    "project_id": "proj-002",
+    "agent_name": "Nova",
+    "model": "claude-3-5-sonnet",
+    "prompt_tokens": 210,
+    "completion_tokens": 85,
+    "cost_usd": 0.0108
+  }
+]

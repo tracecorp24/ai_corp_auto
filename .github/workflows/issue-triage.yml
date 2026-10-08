@@ -1,0 +1,33 @@
+name: Issue triage
+
+on:
+  issues:
+    types: [opened, reopened]
+  schedule:
+    - cron: '17 07 * * 1'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+concurrency:
+  group: ai-corp-issue-triage
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark open issues needing a priority decision
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh label create needs-triage --color FBCA04 --description 'Priority and owner need review' --force
+          gh issue list --state open --limit 500 --json number,labels \
+            --jq '.[] | select(([.labels[].name] | any(startswith("priority:"))) | not) | .number' |
+          while IFS= read -r issue; do
+            [[ -n "$issue" ]] && gh issue edit "$issue" --add-label needs-triage
+          done

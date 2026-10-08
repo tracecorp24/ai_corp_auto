@@ -1,0 +1,322 @@
+[
+  {
+    "id": "proj-001",
+    "name": "E-Ticaret Platform",
+    "description": "Müşteri yönetimi, ödeme entegrasyonu ve stok takip sistemi",
+    "icon": "🛒",
+    "color": "#06b6d4",
+    "status": "active",
+    "health": 92,
+    "progress": 80,
+    "budget_limit": 5,
+    "budget_spent": 2.7251,
+    "priority": "high",
+    "manager": {
+      "name": "Atlas",
+      "avatar": "🤖",
+      "status": "working",
+      "model": "gpt-4o",
+      "lastReport": "Emredersiniz Patron! Direktifinizi aldım: \"JWT auth ve redis rate limiter ekle\". Implementor jwt_auth_ve_redis_ra.py dosyasını oluşturdu, testler başarıyla geçti.",
+      "mood": "confident"
+    },
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Veritabanı Şeması & ORM Modelleri",
+        "status": "completed",
+        "completedAt": "2026-10-06"
+      },
+      {
+        "id": "m2",
+        "title": "Ödeme Gateway Entegrasyonu (Stripe)",
+        "status": "completed",
+        "completedAt": "2026-10-07"
+      },
+      {
+        "id": "m3",
+        "title": "Stok Yönetim API & Webhook",
+        "status": "completed",
+        "progress": 100,
+        "completedAt": "2026-10-07"
+      },
+      {
+        "id": "m4",
+        "title": "Admin Panel & Raporlama",
+        "status": "completed",
+        "progress": 100,
+        "completedAt": "2026-10-07"
+      },
+      {
+        "id": "m5",
+        "title": "Load Test & Production Deploy",
+        "status": "in_progress",
+        "progress": 81
+      },
+      {
+        "id": "m6",
+        "title": "JWT auth ve redis rate limiter ekle",
+        "status": "in_progress",
+        "progress": 10
+      }
+    ],
+    "recentActivity": [
+      {
+        "time": "00:46",
+        "text": "👑 Patron Direktifi: \"JWT auth ve redis rate limiter ekle\" → jwt_auth_ve_redis_ra.py oluşturuldu & doğrulandı",
+        "type": "success"
+      },
+      {
+        "time": "22:45",
+        "text": "Stripe webhook handler test edildi → 3/3 PASSED",
+        "type": "success"
+      },
+      {
+        "time": "22:30",
+        "text": "inventory_api.py dosyasına PUT /stock endpoint eklendi",
+        "type": "code"
+      },
+      {
+        "time": "22:10",
+        "text": "Redis cache layer implement ediliyor...",
+        "type": "working"
+      },
+      {
+        "time": "21:50",
+        "text": "Veritabanı migration başarıyla tamamlandı",
+        "type": "success"
+      }
+    ],
+    "tags": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "Redis",
+      "Stripe"
+    ],
+    "createdAt": "2026-10-05",
+    "worktree": ".worktrees/ecommerce-platform"
+  },
+  {
+    "id": "proj-002",
+    "name": "AI Chatbot SaaS",
+    "description": "Çok dilli müşteri destek botu, RAG pipeline ve analitik dashboard",
+    "icon": "💬",
+    "color": "#8b5cf6",
+    "status": "active",
+    "health": 78,
+    "progress": 71,
+    "budget_limit": 8,
+    "budget_spent": 3.5534,
+    "priority": "critical",
+    "manager": {
+      "name": "Nova",
+      "avatar": "🧠",
+      "status": "working",
+      "model": "claude-3-5-sonnet",
+      "lastReport": "✅ \"Analytics Dashboard & Usage Metrics\" başarıyla tamamlandı! Bir sonraki milestone'a geçiliyor.",
+      "mood": "confident"
+    },
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "LangChain RAG Pipeline Kurulumu",
+        "status": "completed",
+        "completedAt": "2026-10-06"
+      },
+      {
+        "id": "m2",
+        "title": "Vector DB (Qdrant) Entegrasyonu",
+        "status": "completed",
+        "completedAt": "2026-10-07"
+      },
+      {
+        "id": "m3",
+        "title": "Multi-Language Support & Prompt Tuning",
+        "status": "completed",
+        "progress": 100,
+        "completedAt": "2026-10-07"
+      },
+      {
+        "id": "m4",
+        "title": "Analytics Dashboard & Usage Metrics",
+        "status": "completed",
+        "progress": 100,
+        "completedAt": "2026-10-07"
+      },
+      {
+        "id": "m5",
+        "title": "Rate Limiting & Billing Module",
+        "status": "in_progress",
+        "progress": 26
+      },
+      {
+        "id": "m6",
+        "title": "Staging Deploy & Beta Test",
+        "status": "pending"
+      }
+    ],
+    "recentActivity": [
+      {
+        "time": "23:00",
+        "text": "Embedding model: text-embedding-3-large → ada-002 karşılaştırması yapılıyor",
+        "type": "working"
+      },
+      {
+        "time": "22:40",
+        "text": "Türkçe prompt template optimize edildi, relevance skoru %68→%74",
+        "type": "success"
+      },
+      {
+        "time": "22:15",
+        "text": "Qdrant collection oluşturuldu: chatbot_knowledge_base",
+        "type": "code"
+      }
+    ],
+    "tags": [
+      "Python",
+      "LangChain",
+      "Qdrant",
+      "React",
+      "OpenAI"
+    ],
+    "createdAt": "2026-10-06",
+    "worktree": ".worktrees/chatbot-saas"
+  },
+  {
+    "id": "proj-003",
+    "name": "Portfolio Web Sitesi",
+    "description": "Kişisel portfolio, blog sistemi ve proje vitrin sayfası",
+    "icon": "🌐",
+    "color": "#10b981",
+    "status": "completed",
+    "health": 100,
+    "progress": 100,
+    "budget_limit": 1.5,
+    "budget_spent": 0.92,
+    "priority": "medium",
+    "manager": {
+      "name": "Pixel",
+      "avatar": "🎨",
+      "status": "idle",
+      "model": "gpt-4o-mini",
+      "lastReport": "Tüm sayfalar responsive test edildi. Lighthouse skoru: Performance 98, A11y 100, SEO 100. Proje başarıyla tamamlandı! 🎉",
+      "mood": "confident"
+    },
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "UI/UX Tasarım & Komponent Sistemi",
+        "status": "completed",
+        "completedAt": "2026-10-04"
+      },
+      {
+        "id": "m2",
+        "title": "Blog CMS & Markdown Renderer",
+        "status": "completed",
+        "completedAt": "2026-10-05"
+      },
+      {
+        "id": "m3",
+        "title": "SEO & Performance Optimizasyonu",
+        "status": "completed",
+        "completedAt": "2026-10-06"
+      },
+      {
+        "id": "m4",
+        "title": "Deploy & DNS Yapılandırması",
+        "status": "completed",
+        "completedAt": "2026-10-07"
+      }
+    ],
+    "recentActivity": [
+      {
+        "time": "18:00",
+        "text": "🎉 Proje başarıyla tamamlandı ve deploy edildi!",
+        "type": "success"
+      },
+      {
+        "time": "17:30",
+        "text": "DNS propagation tamamlandı, SSL sertifikası aktif",
+        "type": "success"
+      }
+    ],
+    "tags": [
+      "React",
+      "Vite",
+      "CSS",
+      "Markdown"
+    ],
+    "createdAt": "2026-10-03",
+    "worktree": ".worktrees/portfolio"
+  },
+  {
+    "id": "proj-004",
+    "name": "Mobil Fitness App API",
+    "description": "Antrenman planları, beslenme takibi ve kullanıcı profilleri REST API",
+    "icon": "💪",
+    "color": "#f59e0b",
+    "status": "paused",
+    "health": 55,
+    "progress": 25,
+    "budget_limit": 4,
+    "budget_spent": 0.78,
+    "priority": "low",
+    "manager": {
+      "name": "Core",
+      "avatar": "⚡",
+      "status": "blocked",
+      "model": "gemini-1.5-pro",
+      "lastReport": "Veritabanı şeması hazır ama beslenme verisi kaynağı için 3. parti API lisansı gerekiyor. Onayınız bekleniyor.",
+      "mood": "concerned"
+    },
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "DB Schema & User Auth Module",
+        "status": "completed",
+        "completedAt": "2026-10-07"
+      },
+      {
+        "id": "m2",
+        "title": "Workout Plan Generator Engine",
+        "status": "in_progress",
+        "progress": 30
+      },
+      {
+        "id": "m3",
+        "title": "Nutrition Tracker & 3rd Party API",
+        "status": "blocked"
+      },
+      {
+        "id": "m4",
+        "title": "Push Notification Service",
+        "status": "pending"
+      },
+      {
+        "id": "m5",
+        "title": "API Docs & SDK Generation",
+        "status": "pending"
+      }
+    ],
+    "recentActivity": [
+      {
+        "time": "20:00",
+        "text": "⚠️ Beslenme API lisansı için onay bekleniyor",
+        "type": "warning"
+      },
+      {
+        "time": "19:30",
+        "text": "Workout plan algoritması: temel cardio ve strength şablonları hazır",
+        "type": "code"
+      }
+    ],
+    "tags": [
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Firebase"
+    ],
+    "createdAt": "2026-10-07",
+    "worktree": ".worktrees/fitness-api"
+  }
+]

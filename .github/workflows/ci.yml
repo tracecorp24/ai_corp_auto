@@ -1,0 +1,39 @@
+name: AI Corp quality gate
+
+on:
+  push:
+    branches: [main, 'ai-corp/**']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: dashboard/package-lock.json
+      - name: Check server and worker syntax
+        run: |
+          node --check server.js
+          node --check core/workflow/store.js
+          node --check core/workflow/runner.js
+          node --check core/workflow/github.js
+          node --check adapters/codex.js
+      - name: Build dashboard
+        working-directory: dashboard
+        run: |
+          npm ci
+          npm run build
+      - name: Check department contracts
+        run: |
+          test -s departments/RESEARCH.md
+          test -s departments/DEVELOP.md
+          test -s departments/ANALYZE.md
+          test -s departments/WORKER_PROTOCOL.md

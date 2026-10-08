@@ -1,0 +1,26 @@
+{
+  "summary": "İlk CRM sürümü çalışıyor; React-admin'ın varsayılan İngilizce işlem metinleri Türkçe arayüz gereksinimini karşılamıyor.",
+  "requirements_checked": ["Müşteri ekleme, listeleme, güncelleme ve silme API akışı", "Mobil liste görünümü", "Türkçe arayüz", "Bağımlılık ve lisans envanteri", "Yerel Git teslimatı"],
+  "findings": [
+    {
+      "severity": "high",
+      "title": "Yönetim arayüzünün sistem metinleri İngilizce",
+      "steps": "src/App.tsx dosyasında Admin bileşenini incele; i18nProvider tanımlı değil. React-admin varsayılan İngilizce mesajları kullanır.",
+      "expected": "Kaydet, oluştur, düzenle, sil ve doğrulama mesajları Türkçe görünür.",
+      "actual": "Alan etiketleri Türkçe olsa da React-admin sistem metinleri İngilizce kalır.",
+      "reference": "src/App.tsx"
+    },
+    {
+      "severity": "medium",
+      "title": "Tarayıcıda görsel ve dokunmatik doğrulama tamamlanmadı",
+      "steps": "Mobil tarayıcıda müşteri liste, form ve gezinme akışını aç.",
+      "expected": "Mobil görünüm ve etkileşim gerçek cihaz/tarayıcıda doğrulanır.",
+      "actual": "Bu oturumda yerel tarayıcı erişimine kullanıcı izni verilmedi; yalnızca derleme, tür denetimi ve HTTP API akışı doğrulandı.",
+      "reference": "src/App.tsx"
+    }
+  ],
+  "issues": [],
+  "owner_report": "Girdi: Türkiye'deki yerel işletmeler için Instagram ve TikTok odaklı ajans iç aracı; ilk teslimat çalışan müşteri yönetimi MVP'si, süre 3 ay. Çıktı: yerel Git deposunda müşteri CRUD uygulaması ve API. Açık kaynak: React-admin MIT şablonu kullanıldı. Kayıtlı gerçek API bedeli yok; model kullanımı ölçülemedi. Türkçe sistem metinleri eksik olduğundan düzeltme gerekiyor. Ayrı GitHub deposu ve PR henüz açılamadı.",
+  "merge_recommendation": "blocked",
+  "limitations": ["Tarayıcıda görsel doğrulama yapılamadı", "GitHub deposu ve kimlik bilgileri henüz sağlanmadı", "Gerçek model maliyeti ölçülemedi"]
+}

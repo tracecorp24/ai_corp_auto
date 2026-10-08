@@ -1,0 +1,19 @@
+{
+  "summary": "Analiz bulgusu giderildi: React-admin işlem ve bildirim metinleri Türkçeleştirildi; eksik sürüm 5 anahtarları tamamlandı.",
+  "delivery_type": "software",
+  "workspace": "D:/ai_corp/storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95",
+  "files_changed": ["src/App.tsx", "src/i18n.ts", "src/ra-language-turkish.d.ts", "package.json", "package-lock.json", "README.md", "THIRD_PARTY_LICENSES/ra-language-turkish-LICENSE"],
+  "run_instructions": "cd D:/ai_corp/storage/projects/ede5fceb-3efd-4431-91ef-473f6fd37e95; npm install; npm run build; npm start; http://127.0.0.1:3100",
+  "verification": [
+    {"command": "npm run build", "exit_code": 0, "output": "Vite 6.4.4 üretim derlemesi geçti."},
+    {"command": "npx tsc --noEmit", "exit_code": 0, "output": "TypeScript tip kontrolü geçti."},
+    {"command": "npm audit", "exit_code": 0, "output": "Paket kurulumunda 0 güvenlik uyarısı."}
+  ],
+  "sources_used": [
+    {"repository": "KamilGunduz/ra-language-turkish", "package": "ra-language-turkish@3.9.3", "license_spdx": "MIT", "copied_files": ["LICENSE"]}
+  ],
+  "commit": "d6422e34fb9957d583ded1919f0b4cf8f858776b",
+  "branch": "ai-corp/ede5fceb",
+  "pull_request": null,
+  "limitations": ["Ayrı GitHub deposu ve kimlik bilgileri henüz yok.", "Tarayıcıda görsel doğrulama yapılamadı."]
+}
